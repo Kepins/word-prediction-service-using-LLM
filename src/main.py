@@ -3,8 +3,8 @@ from fastapi import FastAPI
 from .routers import example
 
 app = FastAPI(
-    title='renameme',
-    description='Fill the description',
+    title='Word prediction service',
+    description='Word prediction service using LLM',
     version='0.1',
 )
 

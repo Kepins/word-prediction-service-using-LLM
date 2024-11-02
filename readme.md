@@ -53,17 +53,12 @@
     * run `build.sh` (Linux) or `build.ps1` (Windows) to build the project
     * start the Docker Container by running:
       ```bash
-      docker run --rm -p 8080:8080 renameme:latest
+      docker run --rm -p 8080:8080 word-prediction-service:latest
       ```
     * visit http://localhost:8080/docs You should see the Swagger UI and be able to send a request to the service REST
       API
 
-6. Rename all places and variables that use to service name:
-    * `src/renameme_service` directory
-    * Docker Image name in `build.ps1` and `build.sh`
-    * project name and known-first-party in `pyproject.toml`
-
-7. (Optional) Run the project from PyCharm
+6. (Optional) Run the project from PyCharm
     * In the top menu select `Run` > `Edit configurations` > `Add new configuration` (+ symbol) > find and
       chose `FastApi`
     * In the configuration window set the `Application file` to full path to `src\main.py`
