@@ -50,10 +50,11 @@
 
 5. Build and test the project
     * install Docker from the official website (https://www.docker.com/get-started/)
+    * install NVIDIA Container Toolkit from the official website (https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/latest/install-guide.html#installation)
     * run `build.sh` (Linux) or `build.ps1` (Windows) to build the project
     * start the Docker Container by running:
       ```bash
-      docker run --rm -p 8080:8080 word-prediction-service:latest
+      docker run --gpus=all --rm -p 8080:8080 word-prediction-service:latest
       ```
     * visit http://localhost:8080/docs You should see the Swagger UI and be able to send a request to the service REST
       API
