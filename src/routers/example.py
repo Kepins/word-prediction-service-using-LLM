@@ -1,9 +1,9 @@
-from asyncio import sleep
+import json
+import uuid
 
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter
 from pydantic import BaseModel
-
-from ..celery_app import inference
+from redis.asyncio import Redis
 
 router = APIRouter(
     prefix='',
@@ -31,12 +31,20 @@ async def generate_next_token(prompt: str):
     Example response:
     - **response**: The next token generated from the prompt.
     """
-
     from ..main import context
-    redis = context["redis"]
+    redis: Redis = context["redis"]
+    pubsub = redis.pubsub()
 
-    await redis.rpush("PROMPT_QUEUE", prompt)
+    prompt_id = str(uuid.uuid4())
+    await pubsub.psubscribe(f'__keyspace@0__:{prompt_id}')
+    await redis.rpush("PROMPT_QUEUE", json.dumps({"prompt_id": prompt_id, "prompt": prompt}))
 
-    inference.apply_async()
+    async for message in pubsub.listen():
+        if message['type'] == 'pmessage' and message['data'] == b'set':
+            # token has been generated
+            break
+    response_token = await redis.getdel(prompt_id)
 
-    return {"response": "NEXT_TOKEN"}
+    await pubsub.unsubscribe()
+    await pubsub.close()
+    return {"response": response_token.decode('utf-8')}

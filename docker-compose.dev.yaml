@@ -9,23 +9,7 @@ services:
       - "8080:8080"
     volumes:
       - .:/app/
-    environment:
-      - CELERY_BROKER_URL=redis://redis:6379/15
-      - CELERY_RESULT_BACKEND=redis://redis:6379/15
     depends_on:
-      - redis
-  worker:
-    build:
-      context: .
-      dockerfile: Dockerfile-dev
-    command: celery -A src.celery_app worker --loglevel=info
-    volumes:
-      - .:/app/
-    environment:
-      - CELERY_BROKER_URL=redis://redis:6379/15
-      - CELERY_RESULT_BACKEND=redis://redis:6379/15
-    depends_on:
-      - webapp
       - redis
     deploy:
       resources:
@@ -34,21 +18,5 @@ services:
             - driver: nvidia
               count: 1
               capabilities: [ gpu ]
-  dashboard:
-    build:
-      context: .
-      dockerfile: Dockerfile-dev
-    command: celery flower --port=5555
-    ports:
-      - "5555:5555"
-    volumes:
-      - .:/app/
-    environment:
-      - CELERY_BROKER_URL=redis://redis:6379/15
-      - CELERY_RESULT_BACKEND=redis://redis:6379/15
-    depends_on:
-      - webapp
-      - redis
-      - worker
   redis:
     image: redis:7.4
