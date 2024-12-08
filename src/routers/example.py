@@ -1,7 +1,6 @@
-import torch
 from fastapi import APIRouter
 from pydantic import BaseModel
-from transformers import AutoTokenizer, LlamaForCausalLM, pipeline
+from ..celery_app import inference
 
 router = APIRouter(
     prefix='',
@@ -29,17 +28,5 @@ def generate_next_token(prompt: str):
     Example response:
     - **response**: The next token generated from the prompt.
     """
-    model_id = './Llama-3.2-1B'
-    model = LlamaForCausalLM.from_pretrained(model_id, torch_dtype=torch.bfloat16)
-    tokenizer = AutoTokenizer.from_pretrained(model_id)
-
-    pipe = pipeline(
-        'text-generation',
-        model=model,
-        tokenizer=tokenizer,
-        device=0,
-        max_new_tokens=1,  # Limit to one token
-    )
-    responses = pipe(prompt)
-    next_token = responses[0]['generated_text'].replace(prompt, '').strip()
-    return {'response': next_token}
+    task = inference.apply_async(kwargs={'prompt': prompt})
+    return {'response': task.get()}

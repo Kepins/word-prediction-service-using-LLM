@@ -4,3 +4,5 @@ torchaudio==2.5.1+cu124
 torchvision==0.20.1+cu124
 transformers==4.46.1
 fastapi[standard]==0.115.0
+redis[hiredis]==5.2.1
+celery[redis]==5.4.0
