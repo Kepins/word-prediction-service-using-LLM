@@ -1,0 +1,6 @@
+*
+!/Dockerfile
+!/Dockerfile-dev.dockerignore
+!/requirements-dev.txt
+!/src
+!/resources

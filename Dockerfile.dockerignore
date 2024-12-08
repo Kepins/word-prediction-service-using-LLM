@@ -1,6 +1,6 @@
 *
 !/Dockerfile
-!/.dockerignore
+!/Dockerfile.dockerignore
 !/requirements.txt
 !/src
 !/resources

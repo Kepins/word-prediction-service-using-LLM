@@ -1,0 +1,18 @@
+name: dev-intelligent-text-processing-service
+
+services:
+  webapp:
+    build:
+      context: .
+      dockerfile: Dockerfile-dev
+    ports:
+      - "8080:8080"
+    volumes:
+      - .:/app/
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [ gpu ]
