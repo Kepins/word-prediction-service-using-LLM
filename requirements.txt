@@ -18,7 +18,9 @@ anyio==4.6.0
 billiard==4.2.1
     # via celery
 celery[redis]==5.4.0
-    # via -r requirements.in
+    # via
+    #   -r requirements.in
+    #   flower
 certifi==2024.8.30
     # via
     #   httpcore
@@ -54,6 +56,8 @@ filelock==3.16.1
     #   torch
     #   transformers
     #   triton
+flower==2.0.1
+    # via -r requirements.in
 fsspec==2024.10.0
     # via
     #   huggingface-hub
@@ -74,6 +78,8 @@ huggingface-hub==0.26.5
     # via
     #   tokenizers
     #   transformers
+humanize==4.11.0
+    # via flower
 idna==3.7
     # via
     #   anyio
@@ -138,6 +144,8 @@ packaging==24.2
     #   transformers
 pillow==11.0.0
     # via torchvision
+prometheus-client==0.21.1
+    # via flower
 prompt-toolkit==3.0.48
     # via click-repl
 pydantic==2.9.2
@@ -152,6 +160,8 @@ python-dotenv==1.0.1
     # via uvicorn
 python-multipart==0.0.12
     # via fastapi
+pytz==2024.2
+    # via flower
 pyyaml==6.0.2
     # via
     #   huggingface-hub
@@ -194,6 +204,8 @@ torchaudio==2.5.1+cu124
     # via -r requirements.in
 torchvision==0.20.1+cu124
     # via -r requirements.in
+tornado==6.4.2
+    # via flower
 tqdm==4.67.1
     # via
     #   huggingface-hub
