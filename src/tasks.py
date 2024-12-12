@@ -3,8 +3,9 @@ import json
 from threading import Event
 
 import torch
-from redis.asyncio import Redis
 from transformers import AutoTokenizer, LlamaForCausalLM, pipeline
+
+from redis.asyncio import Redis
 
 
 def has_alnum(s: str):
@@ -32,7 +33,7 @@ async def inference(stop_event: Event):
         model=model,
         tokenizer=tokenizer,
         device=0,
-        max_new_tokens=5,  # Limit to 10 tokens
+        max_new_tokens=5,  # Limit to 5 tokens
     )
     stop_event_task = asyncio.create_task(stop_event.wait())
 

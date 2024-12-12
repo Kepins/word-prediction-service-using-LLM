@@ -2,6 +2,7 @@ import asyncio
 from contextlib import asynccontextmanager
 
 from fastapi import FastAPI
+
 from redis.asyncio import Redis
 
 from .routers import example
