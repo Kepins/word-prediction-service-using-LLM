@@ -1,5 +1,5 @@
-# models
-Llama-*/
+# resources
+resources/*
 
 !**/.gitkeep
 

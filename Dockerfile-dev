@@ -22,6 +22,9 @@ RUN set -x && \
 
 USER python
 
+# Copy resources
+COPY resources resources
+
 # Install python dependencies
 COPY ./requirements-dev.txt .
 RUN  pip install --no-cache-dir --upgrade -r requirements-dev.txt

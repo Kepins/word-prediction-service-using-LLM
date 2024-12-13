@@ -3,7 +3,7 @@ import json
 from threading import Event
 
 import torch
-from transformers import AutoTokenizer, LlamaForCausalLM, pipeline
+from transformers import LlamaForCausalLM, pipeline, LlamaTokenizer, AutoTokenizer, PreTrainedTokenizerFast
 
 from redis.asyncio import Redis
 
@@ -24,9 +24,12 @@ async def inference(stop_event: Event):
     pubsub = redis.pubsub()
     await pubsub.psubscribe('__keyspace@0__:PROMPT_QUEUE')
 
-    model_id = './Llama-3.2-1B'
+    model_id = './resources/models/Llama-3.2-1B'
     model = LlamaForCausalLM.from_pretrained(model_id, torch_dtype=torch.bfloat16)
-    tokenizer = AutoTokenizer.from_pretrained(model_id)
+    tokenizer = PreTrainedTokenizerFast.from_pretrained(model_id)
+
+    # To get rid of warning "Setting `pad_token_id` to `eos_token_id`:None for open-end generation."
+    model.generation_config.pad_token_id = model.generation_config.eos_token_id
 
     pipe = pipeline(
         'text-generation',
@@ -49,7 +52,6 @@ async def inference(stop_event: Event):
                 new_text = response[0]['generated_text'].replace(prompt, '', 1)
                 next_word = first_word(new_text)
                 await redis.set(prompt_id, next_word, ex=60)
-            print(len(responses))
 
         # Prepare the wait for either the stop_event or PubSub message
         tasks = [
