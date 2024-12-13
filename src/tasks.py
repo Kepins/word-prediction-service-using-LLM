@@ -3,7 +3,7 @@ import json
 from threading import Event
 
 import torch
-from transformers import LlamaForCausalLM, pipeline, LlamaTokenizer, AutoTokenizer, PreTrainedTokenizerFast
+from transformers import LlamaForCausalLM, PreTrainedTokenizerFast, pipeline
 
 from redis.asyncio import Redis
 
@@ -26,7 +26,7 @@ async def inference(stop_event: Event):
 
     model_id = './resources/models/Llama-3.2-1B'
     model = LlamaForCausalLM.from_pretrained(model_id, torch_dtype=torch.bfloat16)
-    tokenizer = PreTrainedTokenizerFast.from_pretrained(model_id)
+    tokenizer = PreTrainedTokenizerFast.from_pretrained(model_id, padding_side='left')
 
     # To get rid of warning "Setting `pad_token_id` to `eos_token_id`:None for open-end generation."
     model.generation_config.pad_token_id = model.generation_config.eos_token_id
@@ -37,11 +37,16 @@ async def inference(stop_event: Event):
         tokenizer=tokenizer,
         device=0,
         max_new_tokens=5,  # Limit to 5 tokens
+        batch_size=512,
     )
+
+    # Enable batching
+    pipe.tokenizer.pad_token_id = model.config.eos_token_id
+
     stop_event_task = asyncio.create_task(stop_event.wait())
 
     while True:
-        prompts_raw = await redis.lpop("PROMPT_QUEUE", 256)
+        prompts_raw = await redis.lpop("PROMPT_QUEUE", 512)
         if prompts_raw:
             prompts_dict = [json.loads(p.decode()) for p in prompts_raw]
             prompts_ids = [p["prompt_id"] for p in prompts_dict]
