@@ -52,7 +52,7 @@ def send_request():
 
 # Stress test configuration
 num_requests = 10000  # Total number of requests
-max_workers = 750  # Maximum number of concurrent workers
+max_workers = 100  # Maximum number of concurrent workers
 
 
 # Function to run the stress test

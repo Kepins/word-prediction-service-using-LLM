@@ -1,4 +1,4 @@
-FROM python:3.12-slim
+FROM ubuntu:24.04
 
 ENV DEBIAN_FRONTEND=noninteractive
 
@@ -7,17 +7,22 @@ RUN set -x && \
     apt-get update && \
     apt-get install --no-install-recommends --assume-yes \
       build-essential \
-    && \
+      python3 \
+      python3-pip \
+      python3-venv \
+      python3-setuptools \
+      git \
+      nvidia-cuda-toolkit && \
     rm -rf /var/lib/apt/lists/*
 
 WORKDIR /app
 
 # Create user
-ARG UID=1000
-ARG GID=1000
+ARG UID=2000
+ARG GID=2000
 RUN set -x && \
     groupadd -g "${GID}" python && \
-    useradd --create-home --no-log-init -u "${UID}" -g "${GID}" python &&\
+    useradd --create-home --no-log-init -u "${UID}" -g "${GID}" python && \
     chown python:python -R /app
 
 USER python
@@ -25,19 +30,21 @@ USER python
 # Copy resources
 COPY resources resources
 
+RUN python3 -m venv venv
+ENV PATH="/app/venv/bin:$PATH"
+
 # Install python dependencies
 COPY requirements.txt .
-RUN  pip install --no-cache-dir --upgrade -r requirements.txt
+RUN pip3 install --no-cache-dir --upgrade -r requirements.txt
+RUN pip3 install flash-attn --no-build-isolation
 
 # Copy application code
 COPY src src
 
-# don't buffer Python output
+# Don't buffer Python output
 ENV PYTHONUNBUFFERED=1
-# Add pip's user base to PATH
-ENV PATH="$PATH:/home/python/.local/bin"
 
-# expose port
+# Expose port
 EXPOSE 8080
 
-CMD ["fastapi", "run", "src/main.py", "--port", "8080"]
+CMD ["python3", "-m", "fastapi", "run", "src/main.py", "--port", "8080"]

@@ -120,6 +120,8 @@ packaging==24.2
     #   transformers
 pillow==11.0.0
     # via torchvision
+psutil==6.1.0
+    # via -r requirements.in
 pydantic==2.9.2
     # via fastapi
 pydantic-core==2.23.4
