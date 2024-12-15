@@ -3,12 +3,12 @@ name: dev-intelligent-text-processing-service
 services:
   webapp:
     build:
-      context: .
+      context: ./webapp
       dockerfile: Dockerfile-dev
     ports:
       - "8080:8080"
     volumes:
-      - .:/app/
+      - ./webapp/src:/app/src
     depends_on:
       - redis
     deploy:
