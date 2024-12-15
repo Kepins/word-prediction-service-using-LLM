@@ -7,10 +7,19 @@ services:
       dockerfile: Dockerfile-dev
     ports:
       - "8080:8080"
-    volumes:
-      - ./webapp/src:/app/src
     depends_on:
       - redis
+      - llm
+    volumes:
+      - ./webapp/src:/app/src
+  llm:
+    build:
+      context: ./llm
+      dockerfile: Dockerfile
+    depends_on:
+      - redis
+    volumes:
+      - ./llm/src:/app/src
     deploy:
       resources:
         reservations:

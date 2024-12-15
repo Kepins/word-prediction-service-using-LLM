@@ -1,6 +1,6 @@
 import asyncio
 import json
-from threading import Event
+
 
 import torch
 from transformers import LlamaForCausalLM, PreTrainedTokenizerFast, pipeline
@@ -20,7 +20,7 @@ def first_word(s: str):
     return s[:space_idx] if space_idx != -1 else s
 
 
-async def inference(stop_event: Event):
+async def inference(stop_event):
     redis = Redis(host='redis', port=6379, db=0)
     pubsub = redis.pubsub()
     await pubsub.psubscribe('__keyspace@0__:PROMPT_QUEUE')
@@ -78,3 +78,12 @@ async def inference(stop_event: Event):
                 message = task.result()
                 if message and message['type'] == 'pmessage' and message['data'] == b'rpush':
                     break
+
+
+if __name__ == "__main__":
+    stop_event = asyncio.Event()
+
+    try:
+        asyncio.run(inference(stop_event))
+    except KeyboardInterrupt:
+        stop_event.set()
