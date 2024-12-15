@@ -7,6 +7,7 @@ from transformers import LlamaForCausalLM, PreTrainedTokenizerFast, pipeline
 
 from redis.asyncio import Redis
 
+BATCH_SIZE = 128
 
 def has_alnum(s: str):
     return any(c.isalnum() for c in s)
@@ -37,7 +38,7 @@ async def inference(stop_event: Event):
         tokenizer=tokenizer,
         device=0,
         max_new_tokens=5,  # Limit to 5 tokens
-        batch_size=512,
+        batch_size=BATCH_SIZE,
     )
 
     # Enable batching
@@ -46,7 +47,7 @@ async def inference(stop_event: Event):
     stop_event_task = asyncio.create_task(stop_event.wait())
 
     while True:
-        prompts_raw = await redis.lpop("PROMPT_QUEUE", 512)
+        prompts_raw = await redis.lpop("PROMPT_QUEUE", BATCH_SIZE)
         if prompts_raw:
             prompts_dict = [json.loads(p.decode()) for p in prompts_raw]
             prompts_ids = [p["prompt_id"] for p in prompts_dict]

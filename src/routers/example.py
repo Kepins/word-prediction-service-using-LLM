@@ -2,7 +2,7 @@ import json
 import uuid
 
 from fastapi import APIRouter
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 
 from redis.asyncio import Redis
 
@@ -13,7 +13,7 @@ router = APIRouter(
 
 
 class InputModel(BaseModel):
-    prompt: str
+    prompt: str = Field(..., max_length=500)
 
 
 class ResponseModel(BaseModel):
