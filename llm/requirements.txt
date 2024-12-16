@@ -78,6 +78,8 @@ packaging==24.2
     #   transformers
 pillow==11.0.0
     # via torchvision
+protobuf==5.29.1
+    # via -r llm/requirements.in
 psutil==6.1.0
     # via -r llm/requirements.in
 pyyaml==6.0.2

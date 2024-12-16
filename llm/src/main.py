@@ -3,7 +3,7 @@ import json
 
 
 import torch
-from transformers import LlamaForCausalLM, PreTrainedTokenizerFast, pipeline
+from transformers import LlamaForCausalLM, PreTrainedTokenizerFast, pipeline, LlamaTokenizer
 
 from redis.asyncio import Redis
 
@@ -25,9 +25,13 @@ async def inference(stop_event):
     pubsub = redis.pubsub()
     await pubsub.psubscribe('__keyspace@0__:PROMPT_QUEUE')
 
-    model_id = './resources/models/Llama-3.2-1B'
+    # model_id = './resources/models/Llama-3.2-1B'
+    # model = LlamaForCausalLM.from_pretrained(model_id, torch_dtype=torch.bfloat16,attn_implementation="flash_attention_2")
+    # tokenizer = PreTrainedTokenizerFast.from_pretrained(model_id, padding_side='left')
+
+    model_id = './resources/models/Qra-1B'
     model = LlamaForCausalLM.from_pretrained(model_id, torch_dtype=torch.bfloat16, attn_implementation="flash_attention_2")
-    tokenizer = PreTrainedTokenizerFast.from_pretrained(model_id, padding_side='left')
+    tokenizer = LlamaTokenizer.from_pretrained(model_id, padding_side='left')
 
     # To get rid of warning "Setting `pad_token_id` to `eos_token_id`:None for open-end generation."
     model.generation_config.pad_token_id = model.generation_config.eos_token_id
@@ -37,7 +41,7 @@ async def inference(stop_event):
         model=model,
         tokenizer=tokenizer,
         device=0,
-        max_new_tokens=5,  # Limit to 5 tokens
+        max_new_tokens=10,  # Limit to 10 tokens
         batch_size=BATCH_SIZE,
     )
 

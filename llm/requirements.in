@@ -5,6 +5,7 @@ torchvision==0.20.1+cu124
 transformers==4.46.1
 # for LlamaTokenizer
 sentencepiece==0.2.0
+protobuf==5.29.1
 # for flash-attn
 psutil==6.1.0
 redis[hiredis]==5.2.1
