@@ -6,6 +6,8 @@
 #
 --extra-index-url https://download.pytorch.org/whl/cu124
 
+accelerate==1.1.0
+    # via -r llm/requirements.in
 certifi==2024.12.14
     # via requests
 charset-normalizer==3.4.0
@@ -24,6 +26,7 @@ hiredis==3.1.0
     # via redis
 huggingface-hub==0.26.5
     # via
+    #   accelerate
     #   tokenizers
     #   transformers
 idna==3.10
@@ -38,6 +41,7 @@ networkx==3.4.2
     # via torch
 numpy==2.2.0
     # via
+    #   accelerate
     #   torchvision
     #   transformers
 nvidia-cublas-cu12==12.4.5.8
@@ -74,6 +78,7 @@ nvidia-nvtx-cu12==12.4.127
     # via torch
 packaging==24.2
     # via
+    #   accelerate
     #   huggingface-hub
     #   transformers
 pillow==11.0.0
@@ -81,9 +86,12 @@ pillow==11.0.0
 protobuf==5.29.1
     # via -r llm/requirements.in
 psutil==6.1.0
-    # via -r llm/requirements.in
+    # via
+    #   -r llm/requirements.in
+    #   accelerate
 pyyaml==6.0.2
     # via
+    #   accelerate
     #   huggingface-hub
     #   transformers
 redis[hiredis]==5.2.1
@@ -95,7 +103,9 @@ requests==2.32.3
     #   huggingface-hub
     #   transformers
 safetensors==0.4.5
-    # via transformers
+    # via
+    #   accelerate
+    #   transformers
 sentencepiece==0.2.0
     # via -r llm/requirements.in
 sympy==1.13.1
@@ -105,6 +115,7 @@ tokenizers==0.20.3
 torch==2.5.1+cu124
     # via
     #   -r llm/requirements.in
+    #   accelerate
     #   torchaudio
     #   torchvision
 torchaudio==2.5.1+cu124

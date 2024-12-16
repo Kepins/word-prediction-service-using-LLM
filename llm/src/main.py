@@ -26,11 +26,11 @@ async def inference(stop_event):
     await pubsub.psubscribe('__keyspace@0__:PROMPT_QUEUE')
 
     # model_id = './resources/models/Llama-3.2-1B'
-    # model = LlamaForCausalLM.from_pretrained(model_id, torch_dtype=torch.bfloat16,attn_implementation="flash_attention_2")
+    # model = LlamaForCausalLM.from_pretrained(model_id, torch_dtype=torch.bfloat16,attn_implementation="flash_attention_2", device_map=0)
     # tokenizer = PreTrainedTokenizerFast.from_pretrained(model_id, padding_side='left')
 
     model_id = './resources/models/Qra-1B'
-    model = LlamaForCausalLM.from_pretrained(model_id, torch_dtype=torch.bfloat16, attn_implementation="flash_attention_2")
+    model = LlamaForCausalLM.from_pretrained(model_id, torch_dtype=torch.bfloat16, attn_implementation="flash_attention_2", device_map=0)
     tokenizer = LlamaTokenizer.from_pretrained(model_id, padding_side='left')
 
     # To get rid of warning "Setting `pad_token_id` to `eos_token_id`:None for open-end generation."
@@ -40,7 +40,6 @@ async def inference(stop_event):
         'text-generation',
         model=model,
         tokenizer=tokenizer,
-        device=0,
         max_new_tokens=10,  # Limit to 10 tokens
         batch_size=BATCH_SIZE,
     )
