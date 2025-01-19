@@ -1,0 +1,69 @@
+batch_size=1 | Time per prompt: 0.01621538703329861
+batch_size=2 | Time per prompt: 0.010440238285809755
+batch_size=4 | Time per prompt: 0.006166018778458238
+batch_size=8 | Time per prompt: 0.003537917509675026
+batch_size=16 | Time per prompt: 0.002645950997248292
+batch_size=32 | Time per prompt: 0.0022042349446564913
+batch_size=64 | Time per prompt: 0.0019356610719114542
+batch_size=128 | Time per prompt: 0.0019826740026474
+batch_size=256 | Time per prompt: 0.00224084360525012
+batch_size=512 | Time per prompt: 0.0025724086444824934
+batch_size=1024 | Time per prompt: 0.0032164957374334335
+Plot saved to ./time_per_prompt_qra1b_flash_attention.png
+batch_size=1 | Time per prompt: 0.01292229094542563
+batch_size=2 | Time per prompt: 0.007019728654995561
+batch_size=4 | Time per prompt: 0.004019116051495075
+batch_size=8 | Time per prompt: 0.002603909932076931
+batch_size=16 | Time per prompt: 0.0021783229894936085
+batch_size=32 | Time per prompt: 0.0019019872415810823
+batch_size=64 | Time per prompt: 0.0017552739009261131
+batch_size=128 | Time per prompt: 0.0018709271680563688
+batch_size=256 | Time per prompt: 0.002182002877816558
+batch_size=512 | Time per prompt: 0.002567628398537636
+batch_size=1024 | Time per prompt: 0.003278464311733842
+Plot saved to ./time_per_prompt_qra1b.png
+
+
+batch_size=1 | Time per prompt: 0.016313789878040552
+batch_size=2 | Time per prompt: 0.009995696367695928
+batch_size=4 | Time per prompt: 0.00533242872916162
+batch_size=8 | Time per prompt: 0.002912263385951519
+batch_size=16 | Time per prompt: 0.001997313927859068
+batch_size=32 | Time per prompt: 0.0016531110741198063
+batch_size=64 | Time per prompt: 0.001570307882502675
+batch_size=128 | Time per prompt: 0.00173274171538651
+batch_size=256 | Time per prompt: 0.0019828975200653076
+batch_size=512 | Time per prompt: 0.0030466411262750626
+Plot saved to ./time_per_prompt_llama1b_flash_attention.png
+
+batch_size=1 | Time per prompt: 0.014222563011571765
+batch_size=2 | Time per prompt: 0.007446277886629105
+batch_size=4 | Time per prompt: 0.004009901313111186
+batch_size=8 | Time per prompt: 0.0022793130483478308
+batch_size=16 | Time per prompt: 0.0016604200936853886
+batch_size=32 | Time per prompt: 0.0014740151818841696
+batch_size=64 | Time per prompt: 0.0015000251587480307
+batch_size=128 | Time per prompt: 0.0016028732061386108
+batch_size=256 | Time per prompt: 0.002247930271551013
+batch_size=512 | Time per prompt: 0.003197058802470565
+Plot saved to ./time_per_prompt_llama1b.png
+
+batch_size=1 | Time per prompt: 0.03451780928298831
+batch_size=2 | Time per prompt: 0.020620914408937097
+batch_size=4 | Time per prompt: 0.010878288419917226
+batch_size=8 | Time per prompt: 0.006070336094126105
+batch_size=16 | Time per prompt: 0.004114927025511861
+batch_size=32 | Time per prompt: 0.00361761637032032
+batch_size=64 | Time per prompt: 0.0033497330732643604
+batch_size=128 | Time per prompt: 0.0033794937189668417
+Plot saved for Llama-3.2-3B with Flash Attention.
+
+batch_size=1 | Time per prompt: 0.03133339900523424
+batch_size=2 | Time per prompt: 0.016688395757228136
+batch_size=4 | Time per prompt: 0.008864140138030052
+batch_size=8 | Time per prompt: 0.0051261677872389555
+batch_size=16 | Time per prompt: 0.0036178745795041323
+batch_size=32 | Time per prompt: 0.0035057072527706623
+batch_size=64 | Time per prompt: 0.0032112528569996357
+batch_size=128 | Time per prompt: 0.003479081206023693
+Plot saved for Llama-3.2-3B.
