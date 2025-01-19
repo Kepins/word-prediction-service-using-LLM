@@ -9,22 +9,22 @@ from transformers import LlamaForCausalLM, LlamaTokenizer, pipeline, PreTrainedT
 from llm.src.main import StopAfterOneFullWord
 
 PROMPTS = [
-    "Kocham czytać",
-    "Lubię biegać po",
-    "Czuję radość, gdy słucham",
-    "Pamiętam wspaniałe chwile z",
-    "Chciałbym odwiedzić",
-    "Widzę piękne krajobrazy w tym",
-    "Jem smaczne jedzenie z",
-    "Lubię rozmawiać o",
-    "Czuję się szczęśliwy, gdy",
-    "Kocham oglądać zachody",
-    "Biegam codziennie",
-    "Pamiętam każdą podróż, którą",
-    "Lubię gotować nowe",
-    "Chciałbym poznać nowe",
-    "Widzę w przyszłości wiele",
-    "Czuję spokój, gdy",
+    "Kocham czytać ",
+    "Lubię biegać po ",
+    "Czuję radość, gdy słucham ",
+    "Pamiętam wspaniałe chwile z ",
+    "Chciałbym odwiedzić ",
+    "Widzę piękne krajobrazy w tym ",
+    "Jem smaczne jedzenie z ",
+    "Lubię rozmawiać o ",
+    "Czuję się szczęśliwy, gdy ",
+    "Kocham oglądać zachody ",
+    "Biegam codziennie ",
+    "Pamiętam każdą podróż, którą ",
+    "Lubię gotować nowe ",
+    "Chciałbym poznać nowe ",
+    "Widzę w przyszłości wiele ",
+    "Czuję spokój, gdy ",
 ]
 
 def n_prompts(n: int) -> list[str]:
@@ -46,6 +46,7 @@ def test_inference_time(pipe, prompts) -> float:
 
 
 def test_batch_sizes(model, tokenizer) -> list[dict]:
+    prompts = n_prompts(1024)
     results = []
     for batch_size in (1, 2, 4, 8, 16, 32, 64, 128):
         partial_pipe = functools.partial(
@@ -61,8 +62,9 @@ def test_batch_sizes(model, tokenizer) -> list[dict]:
         else:
             pipe = partial_pipe(batch_size=batch_size)
             pipe.tokenizer.pad_token_id = pipe.tokenizer.eos_token_id
-        print(f"{batch_size=} | Time per prompt: {test_inference_time(pipe, n_prompts(1024))}")
-        results.append({"batch_size": batch_size, "time": test_inference_time(pipe, n_prompts(1024))})
+        time_per_prompt = test_inference_time(pipe, prompts)
+        print(f"{batch_size=} | Time per prompt: {time_per_prompt}")
+        results.append({"batch_size": batch_size, "time": time_per_prompt})
     return results
 
 
@@ -140,82 +142,82 @@ def load_model_flash_attention(model_id: Literal["Qra-1B", "Llama-3.2-1B"]):
     return model, tokenizer
 
 if __name__ == "__main__":
-    # #
-    # # Qra-1B
-    # #
-    # # Load model and tokenizer with flash attention
-    # qra1b_model_fa, qra1b_tokenizer_fa = load_model_flash_attention("Qra-1B")
     #
-    # # Get the results of test_batch_sizes
-    # results = test_batch_sizes(qra1b_model_fa, qra1b_tokenizer_fa)
+    # Qra-1B
     #
-    # # Define the title and file path for saving the plot
-    # title = "Time per prompt Qra-1B with flash_attention"
-    # filepath = "./time_per_prompt_qra1b_flash_attention.png"
+    # Load model and tokenizer with flash attention
+    qra1b_model_fa, qra1b_tokenizer_fa = load_model_flash_attention("Qra-1B")
+
+    # Get the results of test_batch_sizes
+    results = test_batch_sizes(qra1b_model_fa, qra1b_tokenizer_fa)
+
+    # Define the title and file path for saving the plot
+    title = "Time per prompt Qra-1B with flash_attention"
+    filepath = "./time_per_prompt_qra1b_flash_attention.png"
+
+    # Call the function to plot and save
+    plot_and_save(results, title, filepath)
+    print(f"Plot saved to {filepath}")
+
+    # Load model and tokenizer without flash attention
+    qra1b_model, qra1b_tokenizer = load_model("Qra-1B")
+    # Get the results of test_batch_sizes
+    results = test_batch_sizes(qra1b_model, qra1b_tokenizer)
+    # Define the title and file path for saving the plot
+    title = "Time per prompt Qra-1B"
+    filepath = "./time_per_prompt_qra1b.png"
+    # Call the function to plot and save
+    plot_and_save(results, title, filepath)
+    print(f"Plot saved to {filepath}")
+
     #
-    # # Call the function to plot and save
-    # plot_and_save(results, title, filepath)
-    # print(f"Plot saved to {filepath}")
+    # Llama3.2-1B
     #
-    # # Load model and tokenizer without flash attention
-    # qra1b_model, qra1b_tokenizer = load_model("Qra-1B")
-    # # Get the results of test_batch_sizes
-    # results = test_batch_sizes(qra1b_model, qra1b_tokenizer)
-    # # Define the title and file path for saving the plot
-    # title = "Time per prompt Qra-1B"
-    # filepath = "./time_per_prompt_qra1b.png"
-    # # Call the function to plot and save
-    # plot_and_save(results, title, filepath)
-    # print(f"Plot saved to {filepath}")
+    # Load model and tokenizer with flash attention
+    llama1b_model_fa, llama1b_tokenizer_fa = load_model_flash_attention("Llama-3.2-1B")
+
+    # Get the results of test_batch_sizes
+    results = test_batch_sizes(llama1b_model_fa, llama1b_tokenizer_fa)
+
+    # Define the title and file path for saving the plot
+    title = "Time per prompt Llama-1B with flash_attention"
+    filepath = "./time_per_prompt_llama1b_flash_attention.png"
+
+    # Call the function to plot and save
+    plot_and_save(results, title, filepath)
+    print(f"Plot saved to {filepath}")
+
+    # Load model and tokenizer without flash attention
+    llama1b_model, llama1b_tokenizer = load_model("Llama-3.2-1B")
+
+    # Get the results of test_batch_sizes
+    results = test_batch_sizes(llama1b_model, llama1b_tokenizer)
+
+    # Define the title and file path for saving the plot
+    title = "Time per prompt Llama-1B"
+    filepath = "./time_per_prompt_llama1b.png"
+
+    # Call the function to plot and save
+    plot_and_save(results, title, filepath)
+    print(f"Plot saved to {filepath}")
+
     #
-    # #
-    # # Llama3.2-1B
-    # #
-    # # Load model and tokenizer with flash attention
-    # llama1b_model_fa, llama1b_tokenizer_fa = load_model_flash_attention("Llama-3.2-1B")
+    # Llama3.2-3B
     #
-    # # Get the results of test_batch_sizes
-    # results = test_batch_sizes(llama1b_model_fa, llama1b_tokenizer_fa)
-    #
-    # # Define the title and file path for saving the plot
-    # title = "Time per prompt Llama-1B with flash_attention"
-    # filepath = "./time_per_prompt_llama1b_flash_attention.png"
-    #
-    # # Call the function to plot and save
-    # plot_and_save(results, title, filepath)
-    # print(f"Plot saved to {filepath}")
-    #
-    # # Load model and tokenizer without flash attention
-    # llama1b_model, llama1b_tokenizer = load_model("Llama-3.2-1B")
-    #
-    # # Get the results of test_batch_sizes
-    # results = test_batch_sizes(llama1b_model, llama1b_tokenizer)
-    #
-    # # Define the title and file path for saving the plot
-    # title = "Time per prompt Llama-1B"
-    # filepath = "./time_per_prompt_llama1b.png"
-    #
-    # # Call the function to plot and save
-    # plot_and_save(results, title, filepath)
-    # print(f"Plot saved to {filepath}")
-    #
-    # #
-    # # Llama3.2-3B
-    # #
-    # # Load model and tokenizer with flash attention
-    # llama3b_model_fa, llama3b_tokenizer_fa = load_model_flash_attention("Llama-3.2-3B")
-    #
-    # # Get the results of test_batch_sizes
-    # results = test_batch_sizes(llama3b_model_fa, llama3b_tokenizer_fa)
-    #
-    # # Define the title and file path for saving the plot
-    # title = "Time per prompt Llama-3.2-3B with flash_attention"
-    # filepath = "./time_per_prompt_llama3b_flash_attention.png"
-    #
-    # # Call the function to plot and save
-    # plot_and_save(results, title, filepath)
-    # print(f"Plot saved to {filepath}")
-    #
+    # Load model and tokenizer with flash attention
+    llama3b_model_fa, llama3b_tokenizer_fa = load_model_flash_attention("Llama-3.2-3B")
+
+    # Get the results of test_batch_sizes
+    results = test_batch_sizes(llama3b_model_fa, llama3b_tokenizer_fa)
+
+    # Define the title and file path for saving the plot
+    title = "Time per prompt Llama-3.2-3B with flash_attention"
+    filepath = "./time_per_prompt_llama3b_flash_attention.png"
+
+    # Call the function to plot and save
+    plot_and_save(results, title, filepath)
+    print(f"Plot saved to {filepath}")
+
     # Load model and tokenizer without flash attention
     llama3b_model, llama3b_tokenizer = load_model("Llama-3.2-3B")
 
