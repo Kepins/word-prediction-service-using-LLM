@@ -71,7 +71,7 @@ def test_batch_sizes(model, tokenizer) -> list[dict]:
 def plot_and_save(results: list[dict], title: str, filepath: str) -> None:
     # Extract batch size and time per prompt
     batch_sizes = [result['batch_size'] for result in results]
-    times_per_prompt = [result['time'] * 100 for result in results]
+    times_per_prompt = [result['time'] * 1000 for result in results]
 
     # Plot the results
     plt.figure(figsize=(10, 6))
@@ -81,7 +81,7 @@ def plot_and_save(results: list[dict], title: str, filepath: str) -> None:
     plt.title(title)
     plt.grid(True)
     # plt.xlim(0, 1050)
-    plt.ylim(0, 4)
+    plt.ylim(0, 40)
     plt.xscale('log')  # Log scale for batch size
     # plt.yscale('log')  # Log scale for time
 
