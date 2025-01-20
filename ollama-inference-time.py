@@ -40,6 +40,7 @@ async def main():
     start_time = time.time()
     responses = await generate_responses(prompts, async_client)
     duration = time.time() - start_time
+    # Time per prompt: 0.310442014
     print(f"Time per prompt: {duration / len(prompts)} seconds")
 
 if __name__ == "__main__":
