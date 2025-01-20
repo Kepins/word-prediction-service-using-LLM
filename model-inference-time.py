@@ -46,7 +46,7 @@ def test_inference_time(pipe, prompts) -> float:
 
 
 def test_batch_sizes(model, tokenizer) -> list[dict]:
-    prompts = n_prompts(1024)
+    prompts = n_prompts(10240)
     results = []
     for batch_size in (1, 2, 4, 8, 16, 32, 64, 128):
         partial_pipe = functools.partial(

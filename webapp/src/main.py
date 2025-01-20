@@ -1,4 +1,3 @@
-import asyncio
 from contextlib import asynccontextmanager
 
 from fastapi import FastAPI
@@ -17,8 +16,8 @@ async def lifespan(app: FastAPI):
 
 app = FastAPI(
     title='Word prediction service',
-    description='Word prediction service using LLM',
-    version='0.1',
+    description='Word prediction service using QRA-1B',
+    version='1.0',
     lifespan=lifespan,
 )
 
