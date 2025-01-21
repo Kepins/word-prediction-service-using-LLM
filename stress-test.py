@@ -105,7 +105,7 @@ def run_stress_test():
         min_time = min(response_times)
 
         print(f"\nResponse Time Metrics:")
-        print(f"Average time per prompt: {(duration / num_requests) * 100:.4f} milliseconds")
+        print(f"Average time per prompt: {(duration / num_requests) * 1000:.4f} milliseconds")
         print(f"Average time: {avg_time:.4f} seconds")
         print(f"Standard deviation: {std_dev_time:.4f} seconds")
         print(f"Max time: {max_time:.4f} seconds")
